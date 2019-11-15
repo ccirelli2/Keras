@@ -5,6 +5,8 @@ import random
 import os
 import io
 import sys
+import enchant
+dict_en = enchant.Dict('en_US')
 
 
 # Keras
@@ -34,4 +36,25 @@ def cut_txt_sequences(text):
         sentences.append(text[i: i + maxlen])
         next_char.append(text[1 + maxlen])
     return sentences, next_char
+
+
+
+
+def get_only_english_words(txt_tokenized):
+
+    txt_en_words = []
+
+    try:
+        for word in txt_tokenized:
+            if dict_en.check(word.strip()) is True:
+                print(word)
+                txt_en_words.append(word.strip())
+    except ValueError:
+        pass
+
+    
+    return ' '.join(txt_en_words)
+
+
+
 
