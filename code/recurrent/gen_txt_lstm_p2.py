@@ -70,14 +70,13 @@ model.add(Dropout(0.2))
 model.add(Dense(y.shape[1], activation='softmax'))
 
 # LOADING WEIGHTS -------------------------------------------------
-filename    = 'weights-improvement-01-2.9477.hdf5'
+filename    = 'weights-improvement-07-2.5373.hdf5'
 model.load_weights(filename)
 model.compile(loss='categorical_crossentropy', optimizer='adam')
 
 
 # Create Reverse Mapping of Characters (Integers to Characters)
 int_to_char = dict((i,c) for i, c in enumerate(chars))
-
 
 
 # MAKE PREDICTIONS -----------------------------------------------
@@ -95,17 +94,20 @@ start   = np.random.randint(0, len(dataX)-1)
 pattern  = dataX[start] # random start to sequence
 
 # Decode first sequence 
-print("\"", ''.join([int_to_char[value] for value in pattern]), "\"")
+#print("\"", ''.join([int_to_char[value] for value in pattern]), "\"")
 
-
-
-
-
-
-
-
-
-
+for i in range(1000):
+	x = np.reshape(pattern, (1, len(pattern), 1))
+	x = x / float(n_vocab)
+	prediction = model.predict(x, verbose=0)
+	index = np.argmax(prediction)
+	result = int_to_char[index]
+	seq_in = [int_to_char[value] for value in pattern]
+	sys.stdout.write(result)
+	pattern.append(index)
+	pattern = pattern[1:len(pattern)]
+    
+    
 
 
 
